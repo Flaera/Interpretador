@@ -11,15 +11,18 @@ class Token {
     char type[INT_MAX];
     int sequence_number;
     char value[INT_MAX];
+    int line;
+    bool terminal = false;
 };
 
 
 class Types{
     public:
     //classes of globals tokens
-    char PR[18][INT_MAX] = {
+    char PR[19][INT_MAX] = {
+        "main\0",
         "if\0", "then\0", "else\0",
-        "integer\0", "real\0", "boolean\0",
+        "int\0", "real\0", "boolean\0",
         "var:\0", "f\0",
         "procedure\0", "function\0",
         "write\0", "read\0",
@@ -54,18 +57,21 @@ int compareString(char* str0, char* str1){
 }
 
 
-int tokenzing(int len, char* input, std::vector<Token> tokens){
+int tokenzing(int len, char* input, Token* tokens){
     int acc = 0;
     int acct = 0;
     Types* types = new Types;
     while (acc<len){
         char word[INT_MAX];
         int acc0 = acc;
-        while (input[acc0]!='\0' && input[acc0]!='\t' && input[acc0]!=' '){
+        int acc_line = 0;
+        DEBUG0{std::cout<<word[acc0-acc]<<"AQUI\n";}
+        while ((input[acc0]>=65 && input[acc0]<=90)
+          || (input[acc0]>=97 && input[acc0]<=122)){
             word[acc0-acc]=input[acc0];
             acc0++;
         }
-        DEBUG0{std::cout<<"WORD="<<word<<"\n";}
+        word[acc0]='\0';
         if (compareString(word,types->PR[0]) ||
         compareString(word,types->PR[1]) ||
         compareString(word,types->PR[2]) ||
@@ -83,17 +89,23 @@ int tokenzing(int len, char* input, std::vector<Token> tokens){
         compareString(word,types->PR[14]) ||
         compareString(word,types->PR[15]) ||
         compareString(word,types->PR[16]) ||
-        compareString(word,types->PR[17])
-        ){
-            strcpy(tokens[acct].value,word);
-            strcpy(tokens[acct].type,"PR\0");
+        compareString(word,types->PR[17]) ||
+        compareString(word,types->PR[18])){
+            DEBUG0{std::cout<<acc<<" - types value="<<types->PR[0]<<"\n";}
+            strcpy(tokens[acct].value, word);
+            DEBUG0{std::cout<<"-"<<tokens[acct].value<<"OI\n";}
+            strcpy(tokens[acct].type, "PR\0");
             tokens[acct].sequence_number = acct;
+            tokens[acct].line = acc_line;
             acct++;
         }
-        acc = acc0;
+        if (input[acc]=='\n'){
+            acc_line++;
+        }
+        acc += acc0;
         acc++;
     }
-    return 1;
+    return acct;
 }
 
 
@@ -119,7 +131,18 @@ int main(int argv, char* argc[]){
         }
         std::cout<<"\nlenght = "<<lenght<<" - FIM\n";
     }
-    std::vector<Token> tokens = std::vector<Token>();
+    Token* tokens;
+    tokens = new Token;
     int error0 = tokenzing(lenght, result, tokens);
+
+    DEBUG0{
+        int acc = 0;
+        std::cout<<"LENGHT="<<error0<<std::endl;
+        while (acc<error0){
+            std::cout<<"WORD="<<tokens[acc].value<<"-"<<tokens[acc].type<<"\n";
+            acc++;
+        }
+    }
+
     return 0;
 }
