@@ -1,7 +1,7 @@
 int main()
     begin
 
-    print(hello world!);
+    print(hello world);
 
     return 0;
     end
