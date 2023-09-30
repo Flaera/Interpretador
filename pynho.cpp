@@ -9,56 +9,71 @@
 
 class Token {
     public:
-    char type[INT_MAX];
-    int sequence_number;
-    char value[INT_MAX];
-    int line;
-    bool terminal = false;
-    void initStrings(){
-        for (int i=0; i<INT_MAX-1; ++i){
-            type[i]='0';
-            value[i]='0';
+        char type[INT_MAX];
+        int sequence_number;
+        char value[INT_MAX];
+        int line;
+        bool terminal = false;
+        Token(){
+            for (int i=0; i<INT_MAX-1; ++i){
+                type[i]='0';
+                value[i]='0';
+            }
+            type[INT_MAX]='\0';
+            value[INT_MAX]='\0';
+            return;
         }
-        type[INT_MAX]='\0';
-        value[INT_MAX]='\0';
-        return;
-    }
+        ~Token(){
+            // delete[] type;
+            DEBUG0{std::cout<<"Deleting token...\n";}
+            // delete[] value;
+        }
 };
 
 
 class Types{
     public:
-    //classes of globals tokens
-    char PR[41][INT_MAX] = {
-        "main\0",
-        "if\0", "then\0", "else\0",
-        "int\0", "real\0", "boolean\0",
-        "var:\0", "f\0",
-        "return\0", "function\0",
-        "write\0", "read\0",
-        "for\0", "to\0", "do\0", "repeat\0", "until\0", "while\0",
-        
-        "programa_SOL\0", "sequencia\0", "tempo\0", "fases_EPIC\0",
-        "Explore\0", "Interact\0", "Present\0", "Critique\0",
-        "navegar\0", "tempo\0", "browser\0",
-        "visualizar_pdf\0", "visualizar_video\0", "videoconferencia\0",
-        "whatsapp_web\0", "email\0",
-        "30_min\0", "1_hora\0", "1_dia\0", "2_dias\0", "sem_limite\0"
-    };
-    char DS[7][3] = {
-        ";\0",".\0",",\0","(\0",")\0","[\0","]\0"
-    };
-    char DC[2][7] = {
-        "begin\0", "end\0"
-    };
-    char MATH_OPERATORS[6][4] = {
-        "+\0","-\0","*\0","/\0","//\0",":=\0"
-    };
-    char REL_OPERATORS[6][4] = {
-        "=\0",">\0","<\0",">=\0","<=\0","<>\0"
-    };
-    char VALUES_BOLLEAN[3][7] = {"true\0", "false\0", "empty\0"};
-    char DIGIT[10][3] = {"0\0","1\0","2\0","3\0","4\0","5\0","6\0","7\0","8\0","9\0"};
+        //classes of globals tokens
+        char PR[41][INT_MAX] = {
+            "main\0",
+            "if\0", "then\0", "else\0",
+            "int\0", "real\0", "boolean\0",
+            "var:\0", "f\0",
+            "return\0", "function\0",
+            "write\0", "read\0",
+            "for\0", "to\0", "do\0", "repeat\0", "until\0", "while\0",
+            
+            "programa_SOL\0", "sequencia\0", "tempo\0", "fases_EPIC\0",
+            "Explore\0", "Interact\0", "Present\0", "Critique\0",
+            "navegar\0", "tempo\0", "browser\0",
+            "visualizar_pdf\0", "visualizar_video\0", "videoconferencia\0",
+            "whatsapp_web\0", "email\0",
+            "30_min\0", "1_hora\0", "1_dia\0", "2_dias\0", "sem_limite\0"
+        };
+        char DS[7][3] = {
+            ";\0",".\0",",\0","(\0",")\0","[\0","]\0"
+        };
+        char DC[2][7] = {
+            "begin\0", "end\0"
+        };
+        char MATH_OPERATORS[6][4] = {
+            "+\0","-\0","*\0","/\0","//\0",":=\0"
+        };
+        char REL_OPERATORS[6][4] = {
+            "=\0",">\0","<\0",">=\0","<=\0","<>\0"
+        };
+        char VALUES_BOLLEAN[3][7] = {"true\0", "false\0", "empty\0"};
+        char DIGIT[10][3] = {"0\0","1\0","2\0","3\0","4\0","5\0","6\0","7\0","8\0","9\0"};
+        ~Types(){
+            DEBUG0{std::cout<<"Deleting types...\n";}
+            // delete[] PR;
+            // delete[] DS;
+            // delete[] DC;
+            // delete[] MATH_OPERATORS;
+            // delete[] REL_OPERATORS;
+            // delete[] VALUES_BOLLEAN;
+            // delete[] DIGIT;
+        }
 };
 
 
@@ -89,7 +104,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
         }
         word[acc0-acc]='\0';
 
-        if (compareString(word,types->PR[0]) ||
+        if (word[0]!='\0' && (compareString(word,types->PR[0]) ||
         compareString(word,types->PR[1]) ||
         compareString(word,types->PR[2]) ||
         compareString(word,types->PR[3]) ||
@@ -131,24 +146,23 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
         compareString(word,types->PR[37]) ||
         compareString(word,types->PR[38]) ||
         compareString(word,types->PR[39]) ||
-        compareString(word,types->PR[40])){
-            Token *token = new Token();
+        compareString(word,types->PR[40]))){
+            Token token = Token();
             DEBUG0{
                 std::cout<<acc<<" - word="<<word<<"-\n";
                 std::cout<<"ACCT:"<<acct<<"\n";
             }
-            strcpy(token->value, word);
-            DEBUG0{std::cout<<"VALOR-TOKEN-"<<token->value<<"-\n";}
-            strcpy(token->type, "PR\0");
-            token->sequence_number = acct;
-            token->line = acc_line;
-            tokens->push_back(*token);
+            strcpy(token.value, word);
+            DEBUG0{std::cout<<"VALOR-TOKEN-"<<token.value<<"-\n";}
+            strcpy(token.type, "PR\0");
+            token.sequence_number = acct;
+            token.line = acc_line;
+            tokens->push_back(token);
             acct+=1;
-            DEBUG0{std::cout<<"acc0="<<acc0<<"END\n";}
             word[0]='\0';
             acc=acc+(acc0-acc);
             // acc++;
-            delete token;
+            // delete token;
         }
         else if ((input[acc]=='[') ||
                 (input[acc]==']') ||
@@ -166,11 +180,12 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             tokens->push_back(*token);
             acct+=1;
             //DEBUG0{std::cout<<"DSacc="<<acc<<std::endl;}
-            acc++;
+            DEBUG0{std::cout<<"acc="<<acc<<"-input[acc]="<<input[acc]<<"END\n";}
+            acc+=1;
             delete token;
         }
-        else if (compareString(word,types->DC[0]) ||
-         compareString(word,types->DC[1])){
+        else if (word[0]!='\0' && (compareString(word,types->DC[0]) ||
+         compareString(word,types->DC[1]))){
             Token *token = new Token();
             strcpy(token->value, word);
             strcpy(token->type, "DC\0");
@@ -182,10 +197,6 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             acc=acc+(acc0-acc);
             word[0]='\0';
             delete token;
-        }
-        else if (input[acc]==32 || input[acc]=='\t' || input[acc]=='\n'){
-            if (input[acc]=='\n'){acc_line++;}
-            acc++;
         }
         else if ((input[acc]=='0') ||
                  (input[acc]=='1') ||
@@ -208,9 +219,9 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             acc++;
             delete token;
         }
-        else if (compareString(word,types->VALUES_BOLLEAN[0]) ||
+        else if (word[0]!='\0' && (compareString(word,types->VALUES_BOLLEAN[0]) ||
                  compareString(word,types->VALUES_BOLLEAN[1]) ||
-                 compareString(word,types->VALUES_BOLLEAN[2])){
+                 compareString(word,types->VALUES_BOLLEAN[2]))){
             Token *token = new Token();
             strcpy(token->value, word);
             strcpy(token->type, "BOOLEAN\0");
@@ -286,6 +297,11 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                 delete token;
             }
         }
+        else if (input[acc]==32 || input[acc]=='\t' ||
+            input[acc]=='\n' || input[acc]=='\0'){
+            if (input[acc]=='\n'){acc_line++;}
+            acc++;
+        }
         else{
             Token *token = new Token();
             strcpy(token->value, word);
@@ -298,6 +314,8 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             acc=acc+(acc0-acc);
             delete token;
         }
+
+        
     }
     delete types;
     return acct;
