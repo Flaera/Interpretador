@@ -29,7 +29,7 @@ class Token {
 class Types{
     public:
     //classes of globals tokens
-    char PR[27][INT_MAX] = {
+    char PR[41][INT_MAX] = {
         "main\0",
         "if\0", "then\0", "else\0",
         "int\0", "real\0", "boolean\0",
@@ -39,8 +39,11 @@ class Types{
         "for\0", "to\0", "do\0", "repeat\0", "until\0", "while\0",
         
         "programa_SOL\0", "sequencia\0", "tempo\0", "fases_EPIC\0",
-        "Explore\0", "Interact\0", "Present\0", "Critique\0"
-
+        "Explore\0", "Interact\0", "Present\0", "Critique\0",
+        "navegar\0", "tempo\0", "browser\0",
+        "visualizar_pdf\0", "visualizar_video\0", "videoconferencia\0",
+        "whatsapp_web\0", "email\0",
+        "30_min\0", "1_hora\0", "1_dia\0", "2_dias\0", "sem_limite\0"
     };
     char DS[7][3] = {
         ";\0",".\0",",\0","(\0",")\0","[\0","]\0"
@@ -113,7 +116,22 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
         compareString(word,types->PR[23]) ||
         compareString(word,types->PR[24]) ||
         compareString(word,types->PR[25]) ||
-        compareString(word,types->PR[26])){
+        compareString(word,types->PR[26]) ||
+
+        compareString(word,types->PR[27]) ||
+        compareString(word,types->PR[28]) ||
+        compareString(word,types->PR[29]) ||
+        compareString(word,types->PR[30]) ||
+        compareString(word,types->PR[31]) ||
+        compareString(word,types->PR[32]) ||
+        compareString(word,types->PR[33]) ||
+        compareString(word,types->PR[34]) ||
+        compareString(word,types->PR[35]) ||
+        compareString(word,types->PR[36]) ||
+        compareString(word,types->PR[37]) ||
+        compareString(word,types->PR[38]) ||
+        compareString(word,types->PR[39]) ||
+        compareString(word,types->PR[40])){
             Token *token = new Token();
             DEBUG0{
                 std::cout<<acc<<" - word="<<word<<"-\n";
@@ -130,6 +148,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             word[0]='\0';
             acc=acc+(acc0-acc);
             // acc++;
+            delete token;
         }
         else if ((input[acc]=='[') ||
                 (input[acc]==']') ||
@@ -148,6 +167,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             acct+=1;
             //DEBUG0{std::cout<<"DSacc="<<acc<<std::endl;}
             acc++;
+            delete token;
         }
         else if (compareString(word,types->DC[0]) ||
          compareString(word,types->DC[1])){
@@ -161,6 +181,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             acct+=1;
             acc=acc+(acc0-acc);
             word[0]='\0';
+            delete token;
         }
         else if (input[acc]==32 || input[acc]=='\t' || input[acc]=='\n'){
             if (input[acc]=='\n'){acc_line++;}
@@ -185,6 +206,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             tokens->push_back(*token);
             acct+=1;
             acc++;
+            delete token;
         }
         else if (compareString(word,types->VALUES_BOLLEAN[0]) ||
                  compareString(word,types->VALUES_BOLLEAN[1]) ||
@@ -198,6 +220,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             acct+=1;
             acc=acc+(acc0-acc);
             word[0]='\0';
+            delete token;
         }
         else if (input[acc]=='+' ||
                  input[acc]=='-' ||
@@ -217,6 +240,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                 tokens->push_back(*token);
                 acct+=1;
                 acc+=2;
+                delete token;
             }
             else{
                 Token *token = new Token();
@@ -228,6 +252,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                 tokens->push_back(*token);
                 acct+=1;
                 acc+=1;
+                delete token;
             }
         }
         else if (input[acc]=='='||input[acc]=='>'||input[acc]=='<'||
@@ -246,6 +271,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                 token->line = acc_line;
                 tokens->push_back(*token);
                 acc+=2;
+                delete token;
             }
             else{
                 Token *token = new Token();
@@ -257,6 +283,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                 tokens->push_back(*token);
                 acct+=1;
                 acc+=1;
+                delete token;
             }
         }
         else{
@@ -269,8 +296,10 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             acct+=1;
             word[0]='\0';
             acc=acc+(acc0-acc);
+            delete token;
         }
     }
+    delete types;
     return acct;
 }
 
