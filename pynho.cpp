@@ -97,13 +97,13 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
         char word[INT_MAX];
         int acc0 = acc;
         DEBUG0{std::cout<<acc<<":ACC-input="<<input[acc]<<"\n";}
-        while ((input[acc0]>=65 && input[acc0]<=90)
-          || (input[acc0]>=97 && input[acc0]<=122)){
+        while (((input[acc0]>=65 && input[acc0]<=90) || input[acc0]=='_')
+          || ((input[acc0]>=97 && input[acc0]<=122) || input[acc0]=='_')){
             word[acc0-acc]=input[acc0];
             acc0++;
         }
         word[acc0-acc]='\0';
-
+        DEBUG0{std::cout<<"WORD="<<word<<"-\n";}
         if (word[0]!='\0' && (compareString(word,types->PR[0]) ||
         compareString(word,types->PR[1]) ||
         compareString(word,types->PR[2]) ||

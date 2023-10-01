@@ -3,7 +3,7 @@ programa_SOL 1
 int main()
     begin
 
-    print(hello world);
+    visualizar_video()
 
     return 0;
     end
