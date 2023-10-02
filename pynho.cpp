@@ -177,7 +177,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             strcpy(token.type, "DS\0");
             token.sequence_number = acct;
             token.line = acc_line;
-            tokens->push_back(*token);
+            tokens->push_back(token);
             acct+=1;
             //DEBUG0{std::cout<<"DSacc="<<acc<<std::endl;}
             DEBUG0{std::cout<<"acc="<<acc<<"-input[acc]="<<input[acc]<<"END\n";}
@@ -192,7 +192,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             DEBUG0{std::cout<<"IS END? -"<<word<<"-\n";}
             token.sequence_number = acct;
             token.line = acc_line;
-            tokens->push_back(*token);
+            tokens->push_back(token);
             acct+=1;
             acc=acc+(acc0-acc);
             word[0]='\0';
@@ -214,7 +214,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             strcpy(token.type, "DIGIT\0");
             token.sequence_number = acct;
             token.line = acc_line;
-            tokens->push_back(*token);
+            tokens->push_back(token);
             acct+=1;
             acc++;
             // delete token;
@@ -227,7 +227,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             strcpy(token.type, "BOOLEAN\0");
             token.sequence_number = acct;
             token.line = acc_line;
-            tokens->push_back(*token);
+            tokens->push_back(token);
             acct+=1;
             acc=acc+(acc0-acc);
             word[0]='\0';
@@ -248,7 +248,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                 strcpy(token.type, "MATH_OPERATOR\0");
                 token.sequence_number = acct;
                 token.line = acc_line;
-                tokens->push_back(*token);
+                tokens->push_back(token);
                 acct+=1;
                 acc+=2;
                 // delete token;
@@ -260,7 +260,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                 strcpy(token.type, "MATH_OPERATOR\0");
                 token.sequence_number = acct;
                 token.line = acc_line;
-                tokens->push_back(*token);
+                tokens->push_back(token);
                 acct+=1;
                 acc+=1;
                 // delete token;
@@ -280,7 +280,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                 strcpy(token.type, "REL_OPERATOR\0");
                 token.sequence_number = acct;
                 token.line = acc_line;
-                tokens->push_back(*token);
+                tokens->push_back(token);
                 acc+=2;
                 // delete token;
             }
@@ -291,7 +291,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                 strcpy(token.type, "REL_OPERATOR\0");
                 token.sequence_number = acct;
                 token.line = acc_line;
-                tokens->push_back(*token);
+                tokens->push_back(token);
                 acct+=1;
                 acc+=1;
                 // delete token;
@@ -308,16 +308,14 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             strcpy(token.type, "ERROR\0");
             token.sequence_number = acct;
             token.line = acc_line;
-            tokens->push_back(*token);
+            tokens->push_back(token);
             acct+=1;
             word[0]='\0';
             acc=acc+(acc0-acc);
             // delete token;
         }
-
-        
     }
-    delete types;
+    // delete types;
     return acct;
 }
 
