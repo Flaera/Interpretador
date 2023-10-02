@@ -92,7 +92,7 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
     int acc = 0;
     int acct = 0;
     int acc_line = 0;
-    Types* types = new Types();
+    Types types = Types();
     while (acc<len){
         char word[INT_MAX];
         int acc0 = acc;
@@ -104,49 +104,49 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
         }
         word[acc0-acc]='\0';
         DEBUG0{std::cout<<"WORD="<<word<<"-\n";}
-        if (word[0]!='\0' && (compareString(word,types->PR[0]) ||
-        compareString(word,types->PR[1]) ||
-        compareString(word,types->PR[2]) ||
-        compareString(word,types->PR[3]) ||
-        compareString(word,types->PR[4]) ||
-        compareString(word,types->PR[5]) ||
-        compareString(word,types->PR[6]) ||
-        compareString(word,types->PR[7]) ||
-        compareString(word,types->PR[8]) ||
-        compareString(word,types->PR[9]) ||
-        compareString(word,types->PR[10]) ||
-        compareString(word,types->PR[11]) ||
-        compareString(word,types->PR[12]) ||
-        compareString(word,types->PR[13]) ||
-        compareString(word,types->PR[14]) ||
-        compareString(word,types->PR[15]) ||
-        compareString(word,types->PR[16]) ||
-        compareString(word,types->PR[17]) ||
-        compareString(word,types->PR[18]) ||
+        if (word[0]!='\0' && (compareString(word,types.PR[0]) ||
+        compareString(word,types.PR[1]) ||
+        compareString(word,types.PR[2]) ||
+        compareString(word,types.PR[3]) ||
+        compareString(word,types.PR[4]) ||
+        compareString(word,types.PR[5]) ||
+        compareString(word,types.PR[6]) ||
+        compareString(word,types.PR[7]) ||
+        compareString(word,types.PR[8]) ||
+        compareString(word,types.PR[9]) ||
+        compareString(word,types.PR[10]) ||
+        compareString(word,types.PR[11]) ||
+        compareString(word,types.PR[12]) ||
+        compareString(word,types.PR[13]) ||
+        compareString(word,types.PR[14]) ||
+        compareString(word,types.PR[15]) ||
+        compareString(word,types.PR[16]) ||
+        compareString(word,types.PR[17]) ||
+        compareString(word,types.PR[18]) ||
 
-        compareString(word,types->PR[19]) ||
-        compareString(word,types->PR[20]) ||
-        compareString(word,types->PR[21]) ||
-        compareString(word,types->PR[22]) ||
-        compareString(word,types->PR[23]) ||
-        compareString(word,types->PR[24]) ||
-        compareString(word,types->PR[25]) ||
-        compareString(word,types->PR[26]) ||
+        compareString(word,types.PR[19]) ||
+        compareString(word,types.PR[20]) ||
+        compareString(word,types.PR[21]) ||
+        compareString(word,types.PR[22]) ||
+        compareString(word,types.PR[23]) ||
+        compareString(word,types.PR[24]) ||
+        compareString(word,types.PR[25]) ||
+        compareString(word,types.PR[26]) ||
 
-        compareString(word,types->PR[27]) ||
-        compareString(word,types->PR[28]) ||
-        compareString(word,types->PR[29]) ||
-        compareString(word,types->PR[30]) ||
-        compareString(word,types->PR[31]) ||
-        compareString(word,types->PR[32]) ||
-        compareString(word,types->PR[33]) ||
-        compareString(word,types->PR[34]) ||
-        compareString(word,types->PR[35]) ||
-        compareString(word,types->PR[36]) ||
-        compareString(word,types->PR[37]) ||
-        compareString(word,types->PR[38]) ||
-        compareString(word,types->PR[39]) ||
-        compareString(word,types->PR[40]))){
+        compareString(word,types.PR[27]) ||
+        compareString(word,types.PR[28]) ||
+        compareString(word,types.PR[29]) ||
+        compareString(word,types.PR[30]) ||
+        compareString(word,types.PR[31]) ||
+        compareString(word,types.PR[32]) ||
+        compareString(word,types.PR[33]) ||
+        compareString(word,types.PR[34]) ||
+        compareString(word,types.PR[35]) ||
+        compareString(word,types.PR[36]) ||
+        compareString(word,types.PR[37]) ||
+        compareString(word,types.PR[38]) ||
+        compareString(word,types.PR[39]) ||
+        compareString(word,types.PR[40]))){
             Token token = Token();
             DEBUG0{
                 std::cout<<acc<<" - word="<<word<<"-\n";
@@ -171,32 +171,32 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                 (input[acc]==';') ||
                 (input[acc]=='.') ||
                 (input[acc]==',')){
-            Token *token = new Token();
-            token->value[0] = input[acc];
-            token->value[1] = '\0';
-            strcpy(token->type, "DS\0");
-            token->sequence_number = acct;
-            token->line = acc_line;
+            Token token = Token();
+            token.value[0] = input[acc];
+            token.value[1] = '\0';
+            strcpy(token.type, "DS\0");
+            token.sequence_number = acct;
+            token.line = acc_line;
             tokens->push_back(*token);
             acct+=1;
             //DEBUG0{std::cout<<"DSacc="<<acc<<std::endl;}
             DEBUG0{std::cout<<"acc="<<acc<<"-input[acc]="<<input[acc]<<"END\n";}
             acc+=1;
-            delete token;
+            // delete token;
         }
-        else if (word[0]!='\0' && (compareString(word,types->DC[0]) ||
-         compareString(word,types->DC[1]))){
-            Token *token = new Token();
-            strcpy(token->value, word);
-            strcpy(token->type, "DC\0");
+        else if (word[0]!='\0' && (compareString(word,types.DC[0]) ||
+         compareString(word,types.DC[1]))){
+            Token token = Token();
+            strcpy(token.value, word);
+            strcpy(token.type, "DC\0");
             DEBUG0{std::cout<<"IS END? -"<<word<<"-\n";}
-            token->sequence_number = acct;
-            token->line = acc_line;
+            token.sequence_number = acct;
+            token.line = acc_line;
             tokens->push_back(*token);
             acct+=1;
             acc=acc+(acc0-acc);
             word[0]='\0';
-            delete token;
+            // delete token;
         }
         else if ((input[acc]=='0') ||
                  (input[acc]=='1') ||
@@ -208,30 +208,30 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                  (input[acc]=='7') ||
                  (input[acc]=='8') ||
                  (input[acc]=='9')){
-            Token *token = new Token();
-            token->value[0] = input[acc];
-            token->value[1] = '\0';
-            strcpy(token->type, "DIGIT\0");
-            token->sequence_number = acct;
-            token->line = acc_line;
+            Token token = Token();
+            token.value[0] = input[acc];
+            token.value[1] = '\0';
+            strcpy(token.type, "DIGIT\0");
+            token.sequence_number = acct;
+            token.line = acc_line;
             tokens->push_back(*token);
             acct+=1;
             acc++;
-            delete token;
+            // delete token;
         }
-        else if (word[0]!='\0' && (compareString(word,types->VALUES_BOLLEAN[0]) ||
-                 compareString(word,types->VALUES_BOLLEAN[1]) ||
-                 compareString(word,types->VALUES_BOLLEAN[2]))){
-            Token *token = new Token();
-            strcpy(token->value, word);
-            strcpy(token->type, "BOOLEAN\0");
-            token->sequence_number = acct;
-            token->line = acc_line;
+        else if (word[0]!='\0' && (compareString(word,types.VALUES_BOLLEAN[0]) ||
+                 compareString(word,types.VALUES_BOLLEAN[1]) ||
+                 compareString(word,types.VALUES_BOLLEAN[2]))){
+            Token token = Token();
+            strcpy(token.value, word);
+            strcpy(token.type, "BOOLEAN\0");
+            token.sequence_number = acct;
+            token.line = acc_line;
             tokens->push_back(*token);
             acct+=1;
             acc=acc+(acc0-acc);
             word[0]='\0';
-            delete token;
+            // delete token;
         }
         else if (input[acc]=='+' ||
                  input[acc]=='-' ||
@@ -241,29 +241,29 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
                  (input[acc]==':' && input[acc+1]=='=')){
             if ((input[acc]=='/' && input[acc+1]=='/') ||
                  (input[acc]==':' && input[acc+1]=='=')){
-                Token *token = new Token();
-                token->value[0] = input[acc];
-                token->value[1] = input[acc+1];
-                token->value[2] = '\0';
-                strcpy(token->type, "MATH_OPERATOR\0");
-                token->sequence_number = acct;
-                token->line = acc_line;
+                Token token = Token();
+                token.value[0] = input[acc];
+                token.value[1] = input[acc+1];
+                token.value[2] = '\0';
+                strcpy(token.type, "MATH_OPERATOR\0");
+                token.sequence_number = acct;
+                token.line = acc_line;
                 tokens->push_back(*token);
                 acct+=1;
                 acc+=2;
-                delete token;
+                // delete token;
             }
             else{
-                Token *token = new Token();
-                token->value[0] = input[acc];
-                token->value[1] = '\0';
-                strcpy(token->type, "MATH_OPERATOR\0");
-                token->sequence_number = acct;
-                token->line = acc_line;
+                Token token = Token();
+                token.value[0] = input[acc];
+                token.value[1] = '\0';
+                strcpy(token.type, "MATH_OPERATOR\0");
+                token.sequence_number = acct;
+                token.line = acc_line;
                 tokens->push_back(*token);
                 acct+=1;
                 acc+=1;
-                delete token;
+                // delete token;
             }
         }
         else if (input[acc]=='='||input[acc]=='>'||input[acc]=='<'||
@@ -273,28 +273,28 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             if ((input[acc]=='>'&&input[acc]=='=')||
                 (input[acc]=='<'&&input[acc]=='=')||
                 (input[acc]=='<'&&input[acc]=='>')){
-                Token *token = new Token();
-                token->value[0] = input[acc];
-                token->value[1] = input[acc+1];
-                token->value[2] = '\0';
-                strcpy(token->type, "REL_OPERATOR\0");
-                token->sequence_number = acct;
-                token->line = acc_line;
+                Token token = Token();
+                token.value[0] = input[acc];
+                token.value[1] = input[acc+1];
+                token.value[2] = '\0';
+                strcpy(token.type, "REL_OPERATOR\0");
+                token.sequence_number = acct;
+                token.line = acc_line;
                 tokens->push_back(*token);
                 acc+=2;
-                delete token;
+                // delete token;
             }
             else{
-                Token *token = new Token();
-                token->value[0] = input[acc];
-                token->value[1] = '\0';
-                strcpy(token->type, "REL_OPERATOR\0");
-                token->sequence_number = acct;
-                token->line = acc_line;
+                Token token = Token();
+                token.value[0] = input[acc];
+                token.value[1] = '\0';
+                strcpy(token.type, "REL_OPERATOR\0");
+                token.sequence_number = acct;
+                token.line = acc_line;
                 tokens->push_back(*token);
                 acct+=1;
                 acc+=1;
-                delete token;
+                // delete token;
             }
         }
         else if (input[acc]==32 || input[acc]=='\t' ||
@@ -303,16 +303,16 @@ int tokenzing(int len, char* input, std::vector<Token> *tokens){
             acc++;
         }
         else{
-            Token *token = new Token();
-            strcpy(token->value, word);
-            strcpy(token->type, "ERROR\0");
-            token->sequence_number = acct;
-            token->line = acc_line;
+            Token token = Token();
+            strcpy(token.value, word);
+            strcpy(token.type, "ERROR\0");
+            token.sequence_number = acct;
+            token.line = acc_line;
             tokens->push_back(*token);
             acct+=1;
             word[0]='\0';
             acc=acc+(acc0-acc);
-            delete token;
+            // delete token;
         }
 
         
